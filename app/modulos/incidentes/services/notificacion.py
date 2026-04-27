@@ -87,6 +87,8 @@ class NotificacionService:
         timeout_minutos: int = 2
     ):
         try:
+            asignaciones_creadas = [] 
+            
             # VERIFICAR si ya hay una asignación aceptada - si es así, NO buscar más talleres
             asignacion_aceptada = db.query(asignacion_service.Asignacion).filter(
                 asignacion_service.Asignacion.incidente_id == incidente_id,
@@ -100,7 +102,6 @@ class NotificacionService:
             talleres_cercanos = buscar_talleres_cercanos(db, lat, lng, radio_km)
             
             logger.info(f"[DEBUG] Buscando taller para incidente {incidente_id} - Talleres cercanos encontrados: {len(talleres_cercanos)}")
-            
             if not talleres_cercanos:
                 logger.info(f"No talleres found within {radio_km}km of incident {incidente_id}")
                 return []
